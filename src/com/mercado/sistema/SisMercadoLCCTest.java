@@ -2,6 +2,8 @@ package com.mercado.sistema;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 
 //import org.junit.Test;
@@ -123,9 +125,10 @@ class SisMercadoLCCTest {
 	/**
 	 * Deve gerar exceptin
 	 * ClienteJaExisteException 
+	 * @throws ClienteJaExisteException 
 	 * */
 	@Test
-	public void geraExcecaoClienteJahCadastradoException() {
+	public void geraExcecaoClienteJahCadastradoException() throws ClienteJaExisteException {
 		SisMercado sis = new SisMercadoLCC();
 		
 		sis.cadastrarCliente(new ClientePF("Marcelo", "992819291"));
@@ -133,7 +136,7 @@ class SisMercadoLCCTest {
 		sis.cadastrarCliente(new ClientePF("Zeze de Camarco", "992819291"));
 		
 		Assertions.assertThrows(ClienteJaExisteException.class,
-				() -> sis.cadastrarCliente(new ClientePF("Marcelo", "992819291")));
+				() -> sis.cadastrarCliente(new ClientePF("Amando Costa", "001912")));
 
 	}
 	

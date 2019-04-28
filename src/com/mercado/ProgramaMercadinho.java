@@ -3,12 +3,16 @@ package com.mercado;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import com.mercado.model.Cliente;
 import com.mercado.model.ClientePF;
 import com.mercado.model.ClientePJ;
 import com.mercado.model.Usuario;
+import com.mercado.sistema.ClienteJaExisteException;
 import com.mercado.sistema.SisMercado;
 import com.mercado.sistema.SisMercadoLCC;
+import com.mercado.sistema.UsuarioJaExisteException;
 
 public class ProgramaMercadinho {
 	public static void main(String[] args) {
@@ -18,113 +22,134 @@ public class ProgramaMercadinho {
 		Scanner scan = new Scanner(System.in);
 		Scanner scanString = new Scanner(System.in);
 		
-		
+		boolean logado = false;
 		boolean continuar = true;
 		while(continuar) {
 			
-			System.out.print("Cadastrar ou fazer login?[1]-cadastrar [2]-fazer login \n>");
-			int input = scan.nextInt();
-			
-			if (input == 1) {
+			String cadOuLogin = JOptionPane.showInputDialog(null, 
+					"Selecione uma das opções abaixo:\n\n[1]-cadastrar [2]-fazer login\n", "<SisMercado>", 
+					JOptionPane.PLAIN_MESSAGE);
+			if (logado) {
+				
+			}
+			// CADASTRAR
+			if (cadOuLogin == null) {
+				if (JOptionPane.YES_NO_OPTION == JOptionPane.showConfirmDialog(null, "Sair?")) {
+					continuar = false;
+				}
+			} else if (cadOuLogin.equals("1")) {
 				Usuario usuario;
-				// cadastrar
-				System.out.print("Informe o seu nome: ");
-				String nome = scanString.nextLine();
-				
-				
-				System.out.print("Informe um email para logar: ");
-				String login = scanString.nextLine();
-				
-				System.out.print("Informe a senha: ");
-				String senha = scanString.nextLine();
+				String nome = JOptionPane.showInputDialog("Informe o nome");
+				String login = JOptionPane.showInputDialog("Informe um email para logar");
+				String senha = JOptionPane.showInputDialog("Informe a senha");
 				
 				if (nome.length()<1 || login.length()<1 || senha.length()<1) {
-					
+					JOptionPane.showMessageDialog(null, "Ops! Alguns campus ficaram em branco", "Erro", 
+							JOptionPane.ERROR_MESSAGE);
 				}
 				usuario = new Usuario(nome, login, senha);
-				sistema.cadastrarUsuario(usuario);
 				
-			} else if (input == 2) {
+				try {
+					sistema.cadastrarUsuario(usuario);
+				} catch (UsuarioJaExisteException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", 
+							JOptionPane.ERROR_MESSAGE);
+				}
+				
+			} else if (cadOuLogin.equals("2")) {
 				// logar
-				System.out.print("Login: ");
-				String login = scanString.nextLine();
-
-				System.out.print("Senha: ");
-				String senha = scanString.nextLine();
+				
+				String login = JOptionPane.showInputDialog("Informe a login");
+				String senha = JOptionPane.showInputDialog("Informe a senha");
 				
 				if(sistema.verificarLogin(login, senha)) {
 					// Mostrar opções
 					
-					System.out.println(" ==== "+ login +" === [logado]");
+					
+					JOptionPane.showMessageDialog(null, "Ok! Logado com sucesso!", "", 
+							JOptionPane.PLAIN_MESSAGE);
 					// 1- Cadastrar Cliente (PF ou PJ)
 					// 2- Obter lista dos clientes
 					// 3- Pesquisa usuarios com nome comecando com...
-					System.out.println("Digite um número correspondente a ação desejada"
-							+ "1- Cadastrar Cliente(PF PJ)\n"
-							+ "2- Obter Lista dos Clientes"
-							+ "3- Pesquisar usuário\n >");
-					input = scan.nextInt();
-					switch(input) {
-					case 1:
-						
+					String escolhaUsuario = JOptionPane.showInputDialog(null, 
+							"Informe um número correspondente a ação desejada\n\n" +
+									"1- Cadastrar Cliente(PF PJ)\n" + 
+									"2- Obter Lista dos Clientes\n" + 
+									"3- Pesquisar usuário\n", "<SisMercado> Usuário["+login+"]",
+							JOptionPane.PLAIN_MESSAGE);
+					
+//					input = scan.nextInt();
+					switch(escolhaUsuario) {
+					case "1":
+						boolean cadastrar = true;
+						String cpfOuCnpj = JOptionPane.showInputDialog(null, 
+								"1-Pessoa Física\n" + 
+								"2-Pessoa Jurídica\n" + 
+								"0 - Voltar\n", "<SisMercado> Usuário["+login+"]",
+								JOptionPane.PLAIN_MESSAGE);
 						Cliente cliente = null;
-						int tempEscolha = input;
-						System.out.print("1-Pessoa Física\n"
-								+ "2-Pessoa Jurídica"
-								+ "0 - Voltar\n >");
 						
-						input = scan.nextInt();
-						if(input == 1) {
-							System.out.print("Nome: ");
-							String nome= scanString.nextLine();
-							System.out.print("CPF :");
-							String CPF = scanString.nextLine();
+						if (cpfOuCnpj.equals("1")) {
+							String nome = JOptionPane.showInputDialog("Nome");
+							String CPF = JOptionPane.showInputDialog("CPF");
+							
 							cliente = new ClientePF(nome, CPF);
+
+						} else if (cpfOuCnpj.equals("2")) {
+							String nome = JOptionPane.showInputDialog("Nome");
+							String CNPJ = JOptionPane.showInputDialog("CNPJ");
 							
-							
-						} else if (input == 2) {
-							System.out.print("Nome: ");
-							String nome = scanString.nextLine();
-							System.out.print("CNPJ: ");
-							String CNPJ = scanString.nextLine();
 							cliente = new ClientePJ(nome, CNPJ);
 								
 						} else {
-							input = tempEscolha;
+							JOptionPane.showMessageDialog(null, "Opção inválida", "Erro", JOptionPane.ERROR_MESSAGE);
+							cadastrar = false;
 						}
 						
-						if (input > 0) {
-							sistema.cadastrarCliente(cliente);
+						if (cadastrar) {
+							try {
+								sistema.cadastrarCliente(cliente);
+							} catch (ClienteJaExisteException e) {
+								JOptionPane.showMessageDialog(null, e.getMessage(), "Erro ao cadastrar",
+										JOptionPane.ERROR_MESSAGE);
+							}
 						}
 						break;
 						
-					case 2:
+					case "2": //2- Obter lista dos clientes
 						
 						List<Cliente> lista = sistema.obterListaDeClientes();
 						if(lista.isEmpty()) {
-							System.out.println("Lista de cliente vazia (:O) ");
+							JOptionPane.showMessageDialog(null, "Lista de cliente vazia :O ");
 						} else {
-							System.out.println(formatarListaCliente(lista));
+							JOptionPane.showMessageDialog(null, formatarListaCliente(lista), "Lista",
+									JOptionPane.PLAIN_MESSAGE);
 						}
 						break;
 						
-					case 3:
-						System.out.print("Informe o prefixo para acharmos o usuário\n >");
-						String prefixo = scanString.nextLine();
-						sistema.pesquisaUsuariosComNomeComecandoCom(prefixo);
-						break;
+					case "3": // 3- Pesquisa usuarios com nome comecando com...
 						
+						String prefixo = JOptionPane.showInputDialog(null,
+								"Informe o prefixo que achamos os usuários correspondentes", "Pesquisar Usuários",
+								JOptionPane.PLAIN_MESSAGE);
+
+						JOptionPane.showMessageDialog(null,
+								formatarListaUsuarios(sistema.pesquisaUsuariosComNomeComecandoCom(prefixo)), "Lista",
+								JOptionPane.PLAIN_MESSAGE);
+						break;
+
 					default:
 						break;
 					}
 					
 				} else {
-					System.out.println("Login ou senha incorretos!!!");
+					JOptionPane.showMessageDialog(null, "Login ou senha incorreto!!!", "Erro", 
+							JOptionPane.ERROR_MESSAGE);
 				}
 				
 				
 			} else {
-				System.out.println("Informe 1 para Cadastrar ou 2 para Logar no sistema\n >");
+				JOptionPane.showMessageDialog(null, "\n Informe 1 para Cadastrar ou 2 para Logar no sistema", "Opção inválida!", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		} // end-while
@@ -134,6 +159,13 @@ public class ProgramaMercadinho {
 		
 	}
 
+	/**
+	 * Tela do usuário já logado no sistema
+	 * */
+	private static void dashboard(String escolhaDoUsuario) {
+		
+	}
+	
 	private static String formatarListaCliente(List<Cliente> lista) {
 		String str = "";
 		int indice = 0;
@@ -142,4 +174,15 @@ public class ProgramaMercadinho {
 		}
 		return str;
 	}
+	
+	private static String formatarListaUsuarios(List<Usuario> lista) {
+		String str = "";
+		int indice = 0;
+		for(Usuario u: lista) {
+			str+= (indice+1) + "- " + u.toString();
+		}
+		return str;
+	}
+	
+	
 }
