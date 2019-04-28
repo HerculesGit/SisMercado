@@ -1,10 +1,10 @@
 package com.mercado.model;
 
-public class Cliente {
+public abstract class Cliente {
 	private String nome;
 	
 	//	nao entendi pra queh o codigo
-	private String codigo;
+	//private String codigo;
 	
 	public Cliente(String nome) {
 		this.nome = nome;
@@ -14,9 +14,7 @@ public class Cliente {
 		return nome;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
+	public abstract String getCodigo();
 	
 	@Override
 	public String toString(){

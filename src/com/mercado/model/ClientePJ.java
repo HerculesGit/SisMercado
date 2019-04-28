@@ -14,7 +14,7 @@ public class ClientePJ extends Cliente {
 
 	@Override
 	public String getCodigo() {
-		return super.getCodigo();
+		return super.getNome() + getCNPJ();
 	}
 	
 	public String getCNPJ() {

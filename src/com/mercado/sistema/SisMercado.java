@@ -12,7 +12,7 @@ import com.mercado.model.Venda;
  * */
 public interface SisMercado {
 	
-	public void cadastrarUsuario(Usuario usuario);
+	public void cadastrarUsuario(Usuario usuario) throws UsuarioJaExisteException;
 	
 	public void cadastrarCliente(Cliente cliente);
 	

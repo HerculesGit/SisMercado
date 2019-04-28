@@ -14,6 +14,6 @@ public class ClientePF extends Cliente {
 
 	@Override
 	public String getCodigo() {
-		return super.getCodigo();
+		return super.getNome() + getCPF();
 	}
 }

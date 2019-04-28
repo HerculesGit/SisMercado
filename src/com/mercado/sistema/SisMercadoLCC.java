@@ -22,7 +22,16 @@ public class SisMercadoLCC implements SisMercado{
 	}
 	
 	@Override
-	public void cadastrarUsuario(Usuario usuario) {
+	public void cadastrarUsuario(Usuario usuario) throws UsuarioJaExisteException {
+		// verificar se o usuario ja foi cadastrado
+		for (Usuario u: usuarios) {
+			System.out.println(u.toString());
+			if(u.equals(usuario)) {
+				
+				throw new UsuarioJaExisteException("Usuário já cadastrado!");
+			}
+		}
+		
 		usuarios.add(usuario);
 	}
 

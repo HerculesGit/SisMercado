@@ -2,6 +2,10 @@ package com.mercado.sistema;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Assertions;
+
+//import org.junit.Test;
+
 import org.junit.jupiter.api.Test;
 
 import com.mercado.model.Cliente;
@@ -80,14 +84,14 @@ class SisMercadoLCCTest {
 	
 	
 	@Test
-	void pesquisaUsuariosComNomeComecandoComMari() {
+	void pesquisaUsuariosComNomeComecandoComMari() throws UsuarioJaExisteException {
 		SisMercado sis = new SisMercadoLCC();
-		sis.cadastrarUsuario(new Usuario("Maria Madalena", ""));
-		sis.cadastrarUsuario(new Usuario("Joelson Marionho", ""));
-		sis.cadastrarUsuario(new Usuario("Mariana Duarte", ""));
-		sis.cadastrarUsuario(new Usuario("Manuel Pinto", ""));
-		sis.cadastrarUsuario(new Usuario("Camila Pereira", ""));
-		sis.cadastrarUsuario(new Usuario("João Azevedo", ""));
+		sis.cadastrarUsuario(new Usuario("Maria Madalena", "1"));
+		sis.cadastrarUsuario(new Usuario("Joelson Marionho", "12"));
+		sis.cadastrarUsuario(new Usuario("Mariana Duarte", "1212"));
+		sis.cadastrarUsuario(new Usuario("Manuel Pinto", "121212"));
+		sis.cadastrarUsuario(new Usuario("Camila Pereira", "12121212"));
+		sis.cadastrarUsuario(new Usuario("João Azevedo", "1212121221"));
 		
 		for(Usuario u: sis.pesquisaUsuariosComNomeComecandoCom("Manuel")) {
 			System.out.println(u.getNome());
@@ -95,6 +99,45 @@ class SisMercadoLCCTest {
 		
 	}
 	
+	
+	/**
+	 * Deve gerar exceptin
+	 * @throws UsuarioJaExisteException 
+	 * */
+	@Test
+	public void geraExcecaoUsuarioJahCadastradoException() throws UsuarioJaExisteException {
+		SisMercado sis = new SisMercadoLCC();
+		
+		sis.cadastrarUsuario(new Usuario("Maria Madalena", "mlena@gm"));
+		
+		sis.cadastrarUsuario(new Usuario("Joelson Marionho", "joenson@gm"));
+		
+		sis.cadastrarUsuario(new Usuario("Mairicio Vieira", "ma_cio@gm"));
+		
+		Assertions.assertThrows(UsuarioJaExisteException.class,
+				() -> sis.cadastrarUsuario(new Usuario("Maria Madalena", "mlena@gm")));
+
+	}
+	
+	
+	/**
+	 * Deve gerar exceptin
+	 * @throws ClienteJaExisteException 
+	 * */
+	@Test
+	public void geraExcecaoClienteJahCadastradoException() throws ClienteJaExisteException {
+		SisMercado sis = new SisMercadoLCC();
+		
+		sis.cadastrarUsuario(new Usuario("Maria Madalena", "mlena@gm"));
+		
+		sis.cadastrarUsuario(new Usuario("Joelson Marionho", "joenson@gm"));
+		
+		sis.cadastrarUsuario(new Usuario("Mairicio Vieira", "ma_cio@gm"));
+		
+		Assertions.assertThrows(UsuarioJaExisteException.class,
+				() -> sis.cadastrarUsuario(new Usuario("Maria Madalena", "mlena@gm")));
+
+	}
 	
 	
 	
