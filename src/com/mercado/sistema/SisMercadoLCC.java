@@ -36,9 +36,16 @@ public class SisMercadoLCC implements SisMercado{
 	}
 
 	@Override
-	public void cadastrarCliente(Cliente cliente) {
+	public void cadastrarCliente(Cliente cliente) throws ClienteJaExisteException {
+		// verificar se o cliente ja foi cadastrado
+		for (Cliente c : clientes) {
+			if (c.equals(cliente)) {
+
+				throw new ClienteJaExisteException("Cliente já cadastrado!");
+			}
+		}
 		clientes.add(cliente);
-		
+
 	}
 
 	/* Não usar ainda

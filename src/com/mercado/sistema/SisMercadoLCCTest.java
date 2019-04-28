@@ -122,20 +122,18 @@ class SisMercadoLCCTest {
 	
 	/**
 	 * Deve gerar exceptin
-	 * @throws ClienteJaExisteException 
+	 * ClienteJaExisteException 
 	 * */
 	@Test
-	public void geraExcecaoClienteJahCadastradoException() throws ClienteJaExisteException {
+	public void geraExcecaoClienteJahCadastradoException() {
 		SisMercado sis = new SisMercadoLCC();
 		
-		sis.cadastrarUsuario(new Usuario("Maria Madalena", "mlena@gm"));
+		sis.cadastrarCliente(new ClientePF("Marcelo", "992819291"));
+		sis.cadastrarCliente(new ClientePF("Amando Costa", "001912"));
+		sis.cadastrarCliente(new ClientePF("Zeze de Camarco", "992819291"));
 		
-		sis.cadastrarUsuario(new Usuario("Joelson Marionho", "joenson@gm"));
-		
-		sis.cadastrarUsuario(new Usuario("Mairicio Vieira", "ma_cio@gm"));
-		
-		Assertions.assertThrows(UsuarioJaExisteException.class,
-				() -> sis.cadastrarUsuario(new Usuario("Maria Madalena", "mlena@gm")));
+		Assertions.assertThrows(ClienteJaExisteException.class,
+				() -> sis.cadastrarCliente(new ClientePF("Marcelo", "992819291")));
 
 	}
 	

@@ -14,7 +14,7 @@ public interface SisMercado {
 	
 	public void cadastrarUsuario(Usuario usuario) throws UsuarioJaExisteException;
 	
-	public void cadastrarCliente(Cliente cliente);
+	public void cadastrarCliente(Cliente cliente) throws ClienteJaExisteException;
 	
 	/* Não usar ainda
 	public void cadastrarProduto(Produto produto);
