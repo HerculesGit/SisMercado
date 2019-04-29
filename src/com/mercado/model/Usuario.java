@@ -46,6 +46,14 @@ public class Usuario {
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		return result;
 	}
+	
+	
+	
+	
+	@Override
+	public String toString() {
+		return "Usuario [nome=" + nome + ", login=" + login + ", senha=" + senha + "]";
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
