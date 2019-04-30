@@ -108,6 +108,18 @@ public class SisMercadoLCC implements SisMercado{
 	public List<Cliente> obterListaDeClientes() {
 		return clientes;
 	}
+
+	@Override
+	public void recuperarDados() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void gravarDados() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

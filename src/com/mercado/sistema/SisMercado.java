@@ -30,4 +30,9 @@ public interface SisMercado {
 	 * */	
 	public boolean verificarLogin(String login, String senha);
 	
+	public void recuperarDados();
+	
+	public void gravarDados();
+	
+	
 }

@@ -2,8 +2,10 @@ package com.mercado.sistema;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 
 //import org.junit.Test;
@@ -15,9 +17,18 @@ import com.mercado.model.ClientePF;
 import com.mercado.model.ClientePJ;
 import com.mercado.model.Produto;
 import com.mercado.model.Usuario;
+import com.mercado.persistence.GravadoraDeDados;
 
 class SisMercadoLCCTest {
-
+	SisMercado sis;
+	GravadoraDeDados gravadoraDeDados;
+	
+	@Before
+	public void inicialize(){
+		this.sis = new SisMercadoLCC();
+		this.gravadoraDeDados = new GravadoraDeDados();
+	}
+	
 	@Test
 	void criaUsuarioESetaTodosOsAtributos() {
 		Usuario usuario = new Usuario("Leandro Franklin","leandro@gmail.com", "1234");
@@ -141,7 +152,35 @@ class SisMercadoLCCTest {
 	}
 	
 	
+	@Test
+	public void gravarDadosClientePJ() {
+		
+		try {
+			gravadoraDeDados = new GravadoraDeDados();
+			gravadoraDeDados.gravaClientesPJ(new ClientePJ("Hercules", "12345"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Cliente> lista = gravadoraDeDados.recuperarClientes();
+		assertEquals(1, lista.size());
+		
+	}
 	
+	@Test
+	public void gravarDadosClientePF() {
+		
+		try {
+			gravadoraDeDados = new GravadoraDeDados();
+			gravadoraDeDados.gravaClientesPF(new ClientePF("Hercules", "1234"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Cliente> lista = gravadoraDeDados.recuperarClientes();
+		assertEquals(1, lista.size());
+		
+	}
 	
 	
 	
