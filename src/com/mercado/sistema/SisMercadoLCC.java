@@ -1,24 +1,30 @@
 package com.mercado.sistema;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mercado.model.Cliente;
+import com.mercado.model.ClientePF;
+import com.mercado.model.ClientePJ;
 import com.mercado.model.Produto;
 import com.mercado.model.Usuario;
 import com.mercado.model.Venda;
+import com.mercado.persistence.GravadoraDeDados;
 
 public class SisMercadoLCC implements SisMercado{
 	List<Usuario> usuarios;
 	List<Produto> listaDeProdutos;
 	List<Cliente> clientes;
 	List<Venda> vendas;
+	GravadoraDeDados gravadoraDeDados;
 
 	public SisMercadoLCC(){
 		usuarios = new ArrayList<Usuario>();
 		listaDeProdutos = new ArrayList<Produto>();
 		clientes = new ArrayList<Cliente>();
 		vendas = new ArrayList<Venda>();
+		gravadoraDeDados = new GravadoraDeDados();
 	}
 	
 	@Override
@@ -110,14 +116,41 @@ public class SisMercadoLCC implements SisMercado{
 	}
 
 	@Override
-	public void recuperarDados() {
-		// TODO Auto-generated method stub
+	public void recuperarDados() throws IOException {
+		clientes = gravadoraDeDados.recuperarClientes();
+		usuarios = gravadoraDeDados.recuperarUsuarios();
 		
 	}
 
 	@Override
-	public void gravarDados() {
-		// TODO Auto-generated method stub
+	public void gravarDados() throws IOException {
+		// Algoritmo
+		// 1- Gravar cliente
+		// 2- Gravar usuários
+		
+		
+		// 1- Gravar cliente
+		for (Cliente cliente : clientes) {
+			
+			//descobrindo a class, assim dá pra saber quem é a subclass
+			if(cliente.getClass().equals(ClientePF.class)){
+				
+				// fazendo cast
+				ClientePF clientePF = (ClientePF) cliente;
+				gravadoraDeDados.gravaClientesPF(clientePF);
+			
+			} else {
+				// fazendo cast
+				ClientePJ clientePJ = (ClientePJ) cliente;
+				gravadoraDeDados.gravaClientesPJ(clientePJ);
+			}
+		}
+		
+		
+		// 2- Gravar usuários
+		for (Usuario usuario : usuarios) {
+			gravadoraDeDados.gravaUsuarios(usuario);
+		}
 		
 	}
 	

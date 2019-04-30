@@ -8,8 +8,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 
-//import org.junit.Test;
-
 import org.junit.jupiter.api.Test;
 
 import com.mercado.model.Cliente;
@@ -203,10 +201,39 @@ class SisMercadoLCCTest {
 	}
 	
 	
+	@Test
+	public void test() {
+		Cliente cliente = new ClientePF("Hercules", "123");
+		Cliente clienteJ = new ClientePJ("Hercules", "123");
+		System.out.println(cliente.getClass().equals(ClientePF.class));
+		System.out.println(clienteJ.getClass().equals(ClientePJ.class));
+		
+		
+	}
 	
+	@Test
+	public void gravaUsuarios() throws IOException {
+		gravadoraDeDados = new GravadoraDeDados();
+		
+		Usuario usuario = new Usuario("Hercules Silva", "h@gmail", "123");
+		
+		gravadoraDeDados.gravaUsuarios(usuario);
+		
+		
+	}
 	
-	
-	
+	@Test
+	public void recuperaUsuarios() throws IOException {
+		gravadoraDeDados = new GravadoraDeDados();
+		List<Usuario> listaUsuario = gravadoraDeDados.recuperarUsuarios();
+		
+		for (Usuario usuario : listaUsuario) {
+			assertEquals("Usuario [nome=Hercules Silva, login=h@gmail, senha=123]", usuario.toString());
+		}
+		
+		
+		
+	}
 	
 	
 	

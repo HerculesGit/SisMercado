@@ -1,5 +1,6 @@
 package com.mercado.sistema;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.mercado.model.Cliente;
@@ -28,9 +29,9 @@ public interface SisMercado {
 	 * */	
 	public boolean verificarLogin(String login, String senha);
 	
-	public void recuperarDados();
+	public void recuperarDados() throws IOException;
 	
-	public void gravarDados();
+	public void gravarDados() throws IOException;
 	
 	
 }

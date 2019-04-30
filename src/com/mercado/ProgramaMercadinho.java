@@ -19,11 +19,13 @@ public class ProgramaMercadinho {
 		//	Inicio
 		SisMercado sistema = new SisMercadoLCC();
 		
+		
 		Usuario usuario = null;
 		
 		boolean logado = false;
 		boolean continuar = true;
 		while(continuar) {
+			
 			
 			if (logado) {
 				String opcaoUsuario= opcoesUsuarioScreen(usuario.getLogin());
