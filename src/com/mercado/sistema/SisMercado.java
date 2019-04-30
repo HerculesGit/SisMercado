@@ -33,5 +33,4 @@ public interface SisMercado {
 	
 	public void gravarDados() throws IOException;
 	
-	
 }

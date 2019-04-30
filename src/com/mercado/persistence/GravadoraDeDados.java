@@ -20,65 +20,48 @@ public class GravadoraDeDados {
 	private final String CLIENTEPF = "clientesPF.txt";
 	private final String USUARIO = "usuarios.txt";
 	
-	public void gravaClientesPJ(ClientePJ clientePJ) throws IOException {
-		gravarDados(null, clientePJ, null);
+	public void gravaClientesPJ(List<ClientePJ> clientesPJ) throws IOException {
+		gravarDados(null, clientesPJ, null);
 	}
 	
-	public void gravaClientesPF(ClientePF clientePF) throws IOException {
-		gravarDados(clientePF, null, null);
+	public void gravaClientesPF(List<ClientePF> clientesPF) throws IOException {
+		gravarDados(clientesPF, null, null);
 	}
 	
-	public void gravaUsuarios(Usuario usuario) throws IOException {
-		gravarDados(null, null, usuario);
+	public void gravaUsuarios(List<Usuario> usuarios) throws IOException {
+		gravarDados(null, null, usuarios);
 	}
 	
 	
-	private void gravarDados(ClientePF clientePF, ClientePJ clientePJ, Usuario usuario) throws IOException {
+	private void gravarDados(List<ClientePF> clientesPF, List<ClientePJ> clientesPJ, List<Usuario> usuarios) throws IOException {
 		String nomeArquivo = "";
 		String dadosAEscrever = "";
-		List<Cliente> listaRecuperados;
 		
-		if (clientePJ != null) {
+		if (clientesPJ != null) {
 			nomeArquivo = CLIENTEPJ;
 			
-			listaRecuperados = recuperarAntesDeGravar(nomeArquivo);
-			
-			for (int i = 0; i < listaRecuperados.size(); i++) {
-				ClientePJ cli  = (ClientePJ) listaRecuperados.get(i);
+			for (ClientePJ cli : clientesPJ) {
 				dadosAEscrever+= new StringBuilder(cli.getNome()).append(SEPARADOR).append(cli.getCNPJ())
 						.append(SEPARADOR).append(cli.getCodigo()).append("\n").toString();
 			}
-			
-			dadosAEscrever+= new StringBuilder(clientePJ.getNome()).append(SEPARADOR).append(clientePJ.getCNPJ())
-					.append(SEPARADOR).append(clientePJ.getCodigo()).toString();
 
-		} else if (clientePF !=null) {
+		} else if (clientesPF != null) {
 			nomeArquivo = CLIENTEPF;
-
-			listaRecuperados = recuperarAntesDeGravar(nomeArquivo);
 			
-			// Código muito parecido... talvez possa refatorar
-			for (int i = 0; i < listaRecuperados.size(); i++) {
-				ClientePF cli = (ClientePF) listaRecuperados.get(i);
+			for (ClientePF cli : clientesPF) {
 				dadosAEscrever+=new StringBuilder(cli.getNome()).append(SEPARADOR).append(cli.getCPF())
 						.append(SEPARADOR).append(cli.getCodigo()).append("\n").toString();
 			}
-			
-			dadosAEscrever+= new StringBuilder(clientePF.getNome()).append(SEPARADOR).append(clientePF.getCPF())
-					.append(SEPARADOR).append(clientePF.getCodigo()).toString();
 		
 		} else {
 			nomeArquivo = USUARIO;
-			List<Usuario> usuariosRecuperados = pegarDadosDosUsuariosComBufferedReader(nomeArquivo);
 			
-			for (Usuario usua : usuariosRecuperados) {
+			for (Usuario usua : usuarios) {
 				dadosAEscrever+=new StringBuilder(usua.getNome()).append(SEPARADOR).append(usua.getLogin())
 						.append(SEPARADOR).append(usua.getSenha()).append("\n").toString();	
 			}
-			
-			dadosAEscrever+=new StringBuilder(usuario.getNome()).append(SEPARADOR).append(usuario.getLogin())
-					.append(SEPARADOR).append(usuario.getSenha()).toString();
 		}
+		
 		
 		// pegar arquivo
 		File arquivo = new File(nomeArquivo);
@@ -95,23 +78,21 @@ public class GravadoraDeDados {
 
 		// texto a ser escrito
 		bw.write(dadosAEscrever);
-
-		// criando uma nova linha para ficar pronto para o próximo cliente
-		bw.newLine();
-
+		
 		// fechando arquivo informando ao sistema que nao será mais utilizado
 		bw.close();
 	}
 	
-	private List<Cliente> recuperarAntesDeGravar(String nomeArquivo) throws IOException {
-		List<Cliente> l = new ArrayList<Cliente>();
-		if (nomeArquivo.equals(CLIENTEPF)) {
-			l = pegarDadosComBufferedReader(CLIENTEPF);
-			return l;
-		} 
-		
-		return pegarDadosComBufferedReader(CLIENTEPJ);
-	}
+//	@Deprecated
+//	private List<Cliente> recuperarAntesDeGravar(String nomeArquivo) throws IOException {
+//		List<Cliente> l = new ArrayList<Cliente>();
+//		if (nomeArquivo.equals(CLIENTEPF)) {
+//			l = pegarDadosComBufferedReader(CLIENTEPF);
+//			return l;
+//		} 
+//		
+//		return pegarDadosComBufferedReader(CLIENTEPJ);
+//	}
 	
 	public List<Cliente> recuperarClientes() throws IOException {
 		List<Cliente> listaClientes = new ArrayList<Cliente>();

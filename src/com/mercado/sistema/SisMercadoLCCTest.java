@@ -3,6 +3,7 @@ package com.mercado.sistema;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -152,10 +153,14 @@ class SisMercadoLCCTest {
 	
 	@Test
 	public void gravarDadosClientePJ() throws IOException {
-		
+		List<ClientePJ> l = new ArrayList<ClientePJ>();
 		try {
+			for (int i = 0; i < 1; i++) {
+				l.add(new ClientePJ("Hercules", "12345"));
+			}
+			
 			gravadoraDeDados = new GravadoraDeDados();
-			gravadoraDeDados.gravaClientesPJ(new ClientePJ("Hercules", "12345"));
+			gravadoraDeDados.gravaClientesPJ(l);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -167,12 +172,13 @@ class SisMercadoLCCTest {
 	@Test
 	public void gravarDadosClientePF() throws IOException {
 		gravadoraDeDados = new GravadoraDeDados();
+		List<ClientePF> l = new ArrayList<ClientePF>();
 		try {
 			
 			for (int i = 0; i < 100; i++) {
-				gravadoraDeDados.gravaClientesPF(new ClientePF("Hercules", "1234"));
+				l.add(new ClientePF("Hercules", "1234"));
 			}
-			
+			gravadoraDeDados.gravaClientesPF(l);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -215,23 +221,39 @@ class SisMercadoLCCTest {
 	public void gravaUsuarios() throws IOException {
 		gravadoraDeDados = new GravadoraDeDados();
 		
-		Usuario usuario = new Usuario("Hercules Silva", "h@gmail", "123");
+		Usuario u1 = new Usuario("Hercules Silva", "h@gmail", "123");
+		Usuario u2 = new Usuario("Oilzon Nascimento", "o@gmail", "123");
+		Usuario u3 = new Usuario("Mariana Google da Silva", "m@gmail", "123");
 		
-		gravadoraDeDados.gravaUsuarios(usuario);
+		List<Usuario> l = new ArrayList<Usuario>();
+		l.add(u1);
+		l.add(u2);
+		l.add(u3);
 		
+		gravadoraDeDados.gravaUsuarios(l);
 		
 	}
 	
 	@Test
 	public void recuperaUsuarios() throws IOException {
 		gravadoraDeDados = new GravadoraDeDados();
+		Usuario u1 = new Usuario("Hercules Silva", "h@gmail", "123");
+		Usuario u2 = new Usuario("Oilzon Nascimento", "o@gmail", "123");
+		Usuario u3 = new Usuario("Mariana Google da Silva", "m@gmail", "123");
+		
+		List<Usuario> l = new ArrayList<Usuario>();
+		l.add(u1);
+		l.add(u2);
+		l.add(u3);
+		
+		gravadoraDeDados.gravaUsuarios(l);
+		
+		
+		
 		List<Usuario> listaUsuario = gravadoraDeDados.recuperarUsuarios();
-		
 		for (Usuario usuario : listaUsuario) {
-			assertEquals("Usuario [nome=Hercules Silva, login=h@gmail, senha=123]", usuario.toString());
+			System.out.println(usuario.toString());
 		}
-		
-		
 		
 	}
 	

@@ -22,6 +22,8 @@ public class ProgramaMercadinho {
 		
 		
 		Usuario usuario = null;
+		String login = "";
+		String senha = "";
 		
 		boolean logado = false;
 		boolean continuar = true;
@@ -50,13 +52,13 @@ public class ProgramaMercadinho {
 		while(continuar) {
 			
 			if (logado) {
-				String opcaoUsuario= opcoesUsuarioScreen(usuario.getLogin());
+				String opcaoUsuario= opcoesUsuarioScreen(login);				
 				if (opcaoUsuario == null) {
 					JOptionPane.showMessageDialog(null, "Opção inválida");
 				} else if (opcaoUsuario.equals("0")){
 					logado = false;
 				}else {
-					dashboardScreen(sistema, opcaoUsuario, usuario.getLogin());
+					dashboardScreen(sistema, opcaoUsuario, login);
 				}
 				
 			} else { // Logar ou cadastrar 
@@ -81,8 +83,8 @@ public class ProgramaMercadinho {
 				} else if (cadOuLogin.equals("1")) {
 					
 					String nome = JOptionPane.showInputDialog("Informe o nome");
-					String login = JOptionPane.showInputDialog("Informe um email para logar");
-					String senha = JOptionPane.showInputDialog("Informe a senha");
+					login = JOptionPane.showInputDialog("Informe um email para logar");
+					senha = JOptionPane.showInputDialog("Informe a senha");
 					
 					if (nome != null && login != null && senha != null) {
 						
@@ -104,8 +106,8 @@ public class ProgramaMercadinho {
 					}
 				} else if (cadOuLogin.equals("2")) {
 					// logar
-					String login = JOptionPane.showInputDialog("Informe o login");
-					String senha = JOptionPane.showInputDialog("Informe a senha");
+					login = JOptionPane.showInputDialog("Informe o login");
+					senha = JOptionPane.showInputDialog("Informe a senha");
 					if (login != null && senha != null) {
 						if(sistema.verificarLogin(login, senha)) {
 							// Mostrar opções
@@ -113,17 +115,12 @@ public class ProgramaMercadinho {
 							JOptionPane.showMessageDialog(null, "Ok! Logado com sucesso!", "", 
 									JOptionPane.PLAIN_MESSAGE);						
 							
-							String opcaoUsuario;
-							if (usuario != null) { // como ele se logou nao teve como dar um 'new' no usuario pra pegar o login com usuario.getLogin()
-								
-								opcaoUsuario= opcoesUsuarioScreen(usuario.getLogin());
-							} else {
-								opcaoUsuario= opcoesUsuarioScreen(login);
-							}
+							String opcaoUsuario = opcoesUsuarioScreen(login);
+							
 							if (opcaoUsuario == null || opcaoUsuario.equals("0")) {
 								logado = false;
 							} else {
-								dashboardScreen(sistema, opcaoUsuario, usuario.getLogin());
+								dashboardScreen(sistema, opcaoUsuario, login);
 							}
 							
 							

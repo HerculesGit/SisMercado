@@ -12,32 +12,32 @@ import com.mercado.model.Usuario;
 import com.mercado.model.Venda;
 import com.mercado.persistence.GravadoraDeDados;
 
-public class SisMercadoLCC implements SisMercado{
+public class SisMercadoLCC implements SisMercado {
 	List<Usuario> usuarios;
 	List<Produto> listaDeProdutos;
 	List<Cliente> clientes;
 	List<Venda> vendas;
 	GravadoraDeDados gravadoraDeDados;
 
-	public SisMercadoLCC(){
+	public SisMercadoLCC() {
 		usuarios = new ArrayList<Usuario>();
 		listaDeProdutos = new ArrayList<Produto>();
 		clientes = new ArrayList<Cliente>();
 		vendas = new ArrayList<Venda>();
 		gravadoraDeDados = new GravadoraDeDados();
 	}
-	
+
 	@Override
 	public void cadastrarUsuario(Usuario usuario) throws UsuarioJaExisteException {
 		// verificar se o usuario ja foi cadastrado
-		for (Usuario u: usuarios) {
+		for (Usuario u : usuarios) {
 			System.out.println(u.toString());
-			if(u.equals(usuario)) {
-				
+			if (u.equals(usuario)) {
+
 				throw new UsuarioJaExisteException("Usuário já cadastrado!");
 			}
 		}
-		
+
 		usuarios.add(usuario);
 	}
 
@@ -54,59 +54,57 @@ public class SisMercadoLCC implements SisMercado{
 
 	}
 
-	/* Não usar ainda
-	@Override
-	public void cadastrarProduto(Produto produto) {
-		listaDeProdutos.add(produto);
-	}
-
-	@Override
-	public void cadastrarVenda(Venda venda) {
-		vendas.add(venda);
-	}
-	*/
+	/*
+	 * Não usar ainda
+	 * 
+	 * @Override public void cadastrarProduto(Produto produto) {
+	 * listaDeProdutos.add(produto); }
+	 * 
+	 * @Override public void cadastrarVenda(Venda venda) { vendas.add(venda); }
+	 */
 
 	@Override
 	public boolean verificarLogin(String login, String senha) {
 		// forEach java
 		for (Usuario user : usuarios) {
 
-			String loginUsuario= user.getLogin();
+			String loginUsuario = user.getLogin();
 			String senhaUsuario = user.getSenha();
-			
+
 			// senha e login que estou procurando eh igual a do usuario atual do for?
-			if (login.equals(loginUsuario) &&  senha.equals(senhaUsuario)){
+			if (login.equals(loginUsuario) && senha.equals(senhaUsuario)) {
 				return true;
 			}
 		}
 
 		return false;
 	}
-	
+
 	@Override
 	public List<Usuario> pesquisaUsuariosComNomeComecandoCom(String prefixo) {
-		
-		// Se a lista estier vazia, ou seja, for igual a zero, nao preciso ir alem pra pesquisar
+
+		// Se a lista estier vazia, ou seja, for igual a zero, nao preciso ir alem pra
+		// pesquisar
 		// apenas retorno a lista novamente
-		if(usuarios.size() == 0) {
+		if (usuarios.size() == 0) {
 			return usuarios;
 		}
-		
+
 		int tamanhoDoPrefixo = prefixo.length();
 		List<Usuario> usuariosAchados = new ArrayList<Usuario>();
-		
+
 		// forEach java
 		for (Usuario user : usuarios) {
-			
+
 			String nome = user.getNome();
-			//	nao estourar o indice caso informe um prefixo enooooooorme
-			if(nome.length() > tamanhoDoPrefixo) {
-				if(nome.substring(0, tamanhoDoPrefixo).equals(prefixo)) {
+			// nao estourar o indice caso informe um prefixo enooooooorme
+			if (nome.length() > tamanhoDoPrefixo) {
+				if (nome.substring(0, tamanhoDoPrefixo).equals(prefixo)) {
 					usuariosAchados.add(user);
 				}
 			}
 		}
-		
+
 		return usuariosAchados;
 	}
 
@@ -119,7 +117,7 @@ public class SisMercadoLCC implements SisMercado{
 	public void recuperarDados() throws IOException {
 		clientes = gravadoraDeDados.recuperarClientes();
 		usuarios = gravadoraDeDados.recuperarUsuarios();
-		
+
 	}
 
 	@Override
@@ -127,32 +125,38 @@ public class SisMercadoLCC implements SisMercado{
 		// Algoritmo
 		// 1- Gravar cliente
 		// 2- Gravar usuários
-		
-		
+
+		List<ClientePF> listaClientesPF = new ArrayList<ClientePF>();
+		List<ClientePJ> listaClientesPJ = new ArrayList<ClientePJ>();
 		// 1- Gravar cliente
 		for (Cliente cliente : clientes) {
-			
-			//descobrindo a class, assim dá pra saber quem é a subclass
-			if(cliente.getClass().equals(ClientePF.class)){
-				
+
+			// descobrindo a class, assim dá pra saber quem é a subclass
+			if (cliente.getClass().equals(ClientePF.class)) {
+
 				// fazendo cast
 				ClientePF clientePF = (ClientePF) cliente;
-				gravadoraDeDados.gravaClientesPF(clientePF);
-			
+				listaClientesPF.add(clientePF);
+
 			} else {
 				// fazendo cast
 				ClientePJ clientePJ = (ClientePJ) cliente;
-				gravadoraDeDados.gravaClientesPJ(clientePJ);
+				listaClientesPJ.add(clientePJ);
 			}
+
+		}
+
+		if (!listaClientesPF.isEmpty()) {
+			gravadoraDeDados.gravaClientesPF(listaClientesPF);
+		}
+
+		if (!listaClientesPJ.isEmpty()) {
+			gravadoraDeDados.gravaClientesPJ(listaClientesPJ);
 		}
 		
-		
-		// 2- Gravar usuários
-		for (Usuario usuario : usuarios) {
-			gravadoraDeDados.gravaUsuarios(usuario);
+		if (!usuarios.isEmpty()) {
+			gravadoraDeDados.gravaUsuarios(usuarios);
 		}
-		
 	}
-	
-	
+
 }
