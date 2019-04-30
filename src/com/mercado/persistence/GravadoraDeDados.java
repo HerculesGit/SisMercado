@@ -39,7 +39,7 @@ public class GravadoraDeDados {
 			
 			for (int i = 0; i < listaRecuperados.size(); i++) {
 				ClientePJ cli  = (ClientePJ) listaRecuperados.get(i);
-				dadosAEscrever = new StringBuilder(cli.getNome()).append(SEPARADOR).append(cli.getCNPJ())
+				dadosAEscrever+= new StringBuilder(cli.getNome()).append(SEPARADOR).append(cli.getCNPJ())
 						.append(SEPARADOR).append(cli.getCodigo()).append("\n").toString();
 			}
 			
@@ -54,11 +54,11 @@ public class GravadoraDeDados {
 			// Código muito parecido... talvez possa refatorar
 			for (int i = 0; i < listaRecuperados.size(); i++) {
 				ClientePF cli = (ClientePF) listaRecuperados.get(i);
-				dadosAEscrever = new StringBuilder(cli.getNome()).append(SEPARADOR).append(cli.getCPF())
+				dadosAEscrever+=new StringBuilder(cli.getNome()).append(SEPARADOR).append(cli.getCPF())
 						.append(SEPARADOR).append(cli.getCodigo()).append("\n").toString();
 			}
 			
-			dadosAEscrever = new StringBuilder(clientePF.getNome()).append(SEPARADOR).append(clientePF.getCPF())
+			dadosAEscrever+= new StringBuilder(clientePF.getNome()).append(SEPARADOR).append(clientePF.getCPF())
 					.append(SEPARADOR).append(clientePF.getCodigo()).toString();
 		}
 		
@@ -107,13 +107,17 @@ public class GravadoraDeDados {
 	}
 	
 	private List<Cliente> pegarDadosComBufferedReader(String nomeArquivo) throws IOException {
+		List<Cliente> lista = new ArrayList<Cliente>();
 		
 		File arquivo = new File(nomeArquivo);
+		if(!arquivo.exists()) {
+			return lista;
+		}
 		FileReader fr = new FileReader(arquivo);
 		
 		BufferedReader br = new BufferedReader(fr);
 		
-		List<Cliente> lista = new ArrayList<Cliente>();
+		
 		
 		
 		// enquanto houver mais linhas

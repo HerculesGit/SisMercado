@@ -165,13 +165,17 @@ class SisMercadoLCCTest {
 		}
 		
 	}
-	
+
 	@Test
 	public void gravarDadosClientePF() throws IOException {
-		
+		gravadoraDeDados = new GravadoraDeDados();
 		try {
-			gravadoraDeDados = new GravadoraDeDados();
-			gravadoraDeDados.gravaClientesPF(new ClientePF("Hercules", "1234"));
+			
+			for (int i = 0; i < 100; i++) {
+				gravadoraDeDados.gravaClientesPF(new ClientePF("Hercules", "1234"));
+			}
+			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -193,7 +197,7 @@ class SisMercadoLCCTest {
 		for (Cliente cliente : l) {
 			System.out.println(cliente.toString());
 		}
-		assertEquals(2, l.size());
+		assertEquals(101, l.size());
 		
 		
 	}

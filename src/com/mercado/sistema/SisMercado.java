@@ -3,9 +3,7 @@ package com.mercado.sistema;
 import java.util.List;
 
 import com.mercado.model.Cliente;
-import com.mercado.model.Produto;
 import com.mercado.model.Usuario;
-import com.mercado.model.Venda;
 
 /**
  * Todo que o SisMercado precisa fazer
