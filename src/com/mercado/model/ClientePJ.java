@@ -20,4 +20,12 @@ public class ClientePJ extends Cliente {
 	public String getCNPJ() {
 		return CNPJ;
 	}
+
+	@Override
+	public String toString() {
+		return "ClientePJ [nome = "+getNome() +", CNPJ = "+getCNPJ()+", código = "+getCodigo()+"]";
+	}
+	
+	
+	
 }

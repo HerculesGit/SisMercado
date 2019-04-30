@@ -19,6 +19,6 @@ public class ClientePF extends Cliente {
 	
 	@Override
 	public String toString() {
-		return"[nome = "+getNome() +", CPF = "+ getCPF() +", código= " + getCodigo() ;
+		return"ClientePF [nome = "+getNome() +", CPF = "+ getCPF() +", código= " + getCodigo()+"]";
 	}
 }

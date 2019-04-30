@@ -153,7 +153,7 @@ class SisMercadoLCCTest {
 	
 	
 	@Test
-	public void gravarDadosClientePJ() {
+	public void gravarDadosClientePJ() throws IOException {
 		
 		try {
 			gravadoraDeDados = new GravadoraDeDados();
@@ -161,14 +161,13 @@ class SisMercadoLCCTest {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			fail();
 		}
-		List<Cliente> lista = gravadoraDeDados.recuperarClientes();
-		assertEquals(1, lista.size());
 		
 	}
 	
 	@Test
-	public void gravarDadosClientePF() {
+	public void gravarDadosClientePF() throws IOException {
 		
 		try {
 			gravadoraDeDados = new GravadoraDeDados();
@@ -176,12 +175,28 @@ class SisMercadoLCCTest {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			fail();
 		}
-		List<Cliente> lista = gravadoraDeDados.recuperarClientes();
-		assertEquals(1, lista.size());
 		
 	}
 	
+	
+	@Test
+	public void leituraDeDadosDosClientesPJePF() throws IOException {
+		gravadoraDeDados = new GravadoraDeDados();
+		String[] str =gravadoraDeDados.formataString("Hercules;1234;Hercules1234");
+		System.out.println(str[0]);
+		
+		
+		List<Cliente> l = gravadoraDeDados.recuperarClientes();
+		
+		for (Cliente cliente : l) {
+			System.out.println(cliente.toString());
+		}
+		assertEquals(2, l.size());
+		
+		
+	}
 	
 	
 	
