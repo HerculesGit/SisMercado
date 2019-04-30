@@ -1,5 +1,6 @@
 package com.mercado;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -24,8 +25,29 @@ public class ProgramaMercadinho {
 		
 		boolean logado = false;
 		boolean continuar = true;
-		while(continuar) {
+		String msgErrorWindowsPlatform = "Ops! Agora deu errado!\n Por favor, entre em contato com o desenvolvedor para solucionar o problema\n\n"
+				+ ""
+				+ "Possível erro: \n"
+				+ "1- Você está usando Windows - Já estamos resolvendo esse problema";
+		
+		// carregar dados
+		try {
+			sistema.recuperarDados();
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(null,
+					msgErrorWindowsPlatform,
+					"Erro ao carregar dados", JOptionPane.ERROR_MESSAGE);
 			
+			int resposta = JOptionPane.showConfirmDialog(null, 
+					"Deseja iniciar a aplicação após o erro?", "", JOptionPane.QUESTION_MESSAGE);
+		
+			if (resposta != JOptionPane.YES_OPTION) {
+				continuar = false;
+			}
+		}
+		
+		
+		while(continuar) {
 			
 			if (logado) {
 				String opcaoUsuario= opcoesUsuarioScreen(usuario.getLogin());
@@ -47,6 +69,14 @@ public class ProgramaMercadinho {
 					if (JOptionPane.YES_NO_OPTION == JOptionPane.showConfirmDialog(null, "Sair?")) {
 						logado = false;
 						continuar = false;
+						
+						try {
+							sistema.gravarDados();
+							JOptionPane.showMessageDialog(null, "Suas inclusões e/ou alterações foram realizadas com sucesso!");
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(null, msgErrorWindowsPlatform, 
+									"Erro ao salvar informações", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				} else if (cadOuLogin.equals("1")) {
 					
@@ -83,7 +113,13 @@ public class ProgramaMercadinho {
 							JOptionPane.showMessageDialog(null, "Ok! Logado com sucesso!", "", 
 									JOptionPane.PLAIN_MESSAGE);						
 							
-							String opcaoUsuario= opcoesUsuarioScreen(usuario.getLogin());
+							String opcaoUsuario;
+							if (usuario != null) { // como ele se logou nao teve como dar um 'new' no usuario pra pegar o login com usuario.getLogin()
+								
+								opcaoUsuario= opcoesUsuarioScreen(usuario.getLogin());
+							} else {
+								opcaoUsuario= opcoesUsuarioScreen(login);
+							}
 							if (opcaoUsuario == null || opcaoUsuario.equals("0")) {
 								logado = false;
 							} else {
@@ -199,6 +235,7 @@ public class ProgramaMercadinho {
 			break;
 		}
 	}
+	
 	
 	
 	private static String formatarListaClienteOuUsuario(List<Cliente> listaCliente , List<Usuario> listaUsuario) {
